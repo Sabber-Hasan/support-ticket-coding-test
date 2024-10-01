@@ -43,7 +43,7 @@ Route::get('/dashboard', function () {
  
 Route::middleware(Admin::class)->group(function () {
     Route::get('/admindashboard',[ControllersAdmin ::class, 'index'])->name('admin');
-    Route::get('/admindashboard/userinfo',[ControllersAdmin ::class, 'user'])->name('admin.user');
+    Route::resource('/admindashboard/user', ControllersAdmin::class);
 });
 Route::middleware(Customer::class)->group(function () {
     Route::get('/customerdashboard', [ControllersCustomer::class, 'index'])->name('customer');

@@ -14,7 +14,7 @@ class Admin extends Controller
     public function index()
     {
         $users = User::all();
-         return view('admin.dashboard', compact('users'));
+         return view('admin.user', compact('users'));
     }
 
     /**
@@ -22,7 +22,7 @@ class Admin extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.create');
     }
 
     /**
@@ -30,13 +30,25 @@ class Admin extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required',
+            'email' => 'required',
+            'password' => 'required',
+            'role' => 'required',
+        ]);
+        $user = new User();
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->password = $request->password;
+        $user->role = $request->role;
+        $user->save();
+        return redirect()->route('admin') ->with('success', 'User created successfully');   
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Ticket $ticket)
+    public function show(User $user)
     {
         //
     }
@@ -44,7 +56,7 @@ class Admin extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Ticket $ticket)
+    public function edit(User $user)
     {
         //
     }
@@ -52,7 +64,7 @@ class Admin extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Ticket $ticket)
+    public function update(Request $request, User $user)
     {
         //
     }
@@ -60,9 +72,12 @@ class Admin extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Ticket $ticket)
+    public function destroy(User $user)
     {
-        //
+        $user->delete();
+
+        return redirect()->route('admin') ->with('success', 'User deleted successfully');
     }
     
 }
+
